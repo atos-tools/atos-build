@@ -138,8 +138,7 @@ done
 echo
 echo "Testing atos..."
 pushd $srcroot/atos-utils >/dev/null
-make tests
-make examples-nograph
+ROOT=$pwd/distimage make tests
 popd >/dev/null
 
 echo
