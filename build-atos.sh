@@ -67,7 +67,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PYGRAPH" = "" ]; then
     pushd build/pygraph >/dev/null
     tar xzf $atosfiles/python-graph-core-1.8.1.tar.gz
     cd ./python-graph-core-1.8.1
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/python
+    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
     popd >/dev/null
 fi
 
@@ -78,7 +78,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     pushd build/jsonpath >/dev/null
     tar xzf $atosfiles/jsonpath-0.53.tar.gz
     cd ./jsonpath-0.53
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/python
+    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
     popd >/dev/null
 fi
 
@@ -89,7 +89,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONLIB" = "" ]; then
     pushd build/jsonlib >/dev/null
     tar xzf $atosfiles/jsonlib-0.1.tar.gz
     cd ./jsonlib-0.1
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/python
+    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
     popd >/dev/null
 fi
 
@@ -138,7 +138,8 @@ done
 echo
 echo "Testing atos..."
 pushd $srcroot/atos-utils >/dev/null
-env PYTHONPATH=$pwd/distimage/lib/python:$PYTHONPATH make check tests
+make tests
+make examples-nograph
 popd >/dev/null
 
 echo
