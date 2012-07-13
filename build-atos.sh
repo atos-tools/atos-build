@@ -38,7 +38,10 @@ atosfiles=/home/compwork/projects/atos/
 
 echo "Building atos version $version..."
 rm -rf build distimage distro atos-$version
-mkdir build distimage distro
+mkdir -p build distimage distro devimage/lib/python
+
+export PYTHONPATH=$pwd/devimage/lib/python
+
 
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PROOT" = "" ]; then
     echo
@@ -67,7 +70,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PYGRAPH" = "" ]; then
     pushd build/pygraph >/dev/null
     tar xzf $atosfiles/python-graph-core-1.8.1.tar.gz
     cd ./python-graph-core-1.8.1
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
+    ./setup.py install --home=$pwd/devimage
     popd >/dev/null
 fi
 
@@ -78,7 +81,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     pushd build/jsonpath >/dev/null
     tar xzf $atosfiles/jsonpath-0.53.tar.gz
     cd ./jsonpath-0.53
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
+    ./setup.py install --home=$pwd/devimage
     popd >/dev/null
 fi
 
@@ -89,7 +92,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONLIB" = "" ]; then
     pushd build/jsonlib >/dev/null
     tar xzf $atosfiles/jsonlib-0.1.tar.gz
     cd ./jsonlib-0.1
-    ./setup.py install --root=$pwd/distimage --install-lib=lib/atos/python
+    ./setup.py install --home=$pwd/devimage
     popd >/dev/null
 fi
 
@@ -129,6 +132,7 @@ echo
 echo "Building atos..."
 pushd $srcroot/atos-utils >/dev/null
 make PREFIX=$pwd/distimage all install
+cp -fr $pwd/devimage/lib/python $pwd/distimage/lib/atos/python
 popd >/dev/null
 for arch in i386 x86_64; do
     mkdir -p distimage/lib/atos/$arch
@@ -138,7 +142,7 @@ done
 echo
 echo "Testing atos..."
 pushd $srcroot/atos-utils >/dev/null
-ROOT=$pwd/distimage make tests
+ROOT=$pwd/distimage make tests -j 4
 popd >/dev/null
 
 echo
