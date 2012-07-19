@@ -63,6 +63,18 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_QEMU" = "" ]; then
     popd >/dev/null
 fi
 
+if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRIBUTE" = "" ]; then
+    echo
+    echo "Building distribute..."
+    mkdir build/distribute
+    pushd build/distribute >/dev/null
+    scp $atosfiles/distribute-0.6.24.tar.gz .
+    tar xzf distribute-0.6.24.tar.gz
+    cd ./distribute-0.6.24
+    python ./setup.py install --prefix= --home=$pwd/devimage # some version of setup.py needs to have --prefix unset to work with --home
+    popd >/dev/null
+fi
+
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PYGRAPH" = "" ]; then
     echo
     echo "Building pygraph..."
