@@ -34,7 +34,7 @@ esac
 
 version=`cd $srcroot/atos-utils; ./config/get_version.sh`
 
-atosfiles=/home/compwork/projects/atos/
+atosfiles=gnx5855.gnb.st.com:/home/compwork/projects/atos/
 
 echo "Building atos version $version..."
 rm -rf build distimage distro atos-$version
@@ -68,9 +68,10 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PYGRAPH" = "" ]; then
     echo "Building pygraph..."
     mkdir build/pygraph
     pushd build/pygraph >/dev/null
-    tar xzf $atosfiles/python-graph-core-1.8.1.tar.gz
+    scp $atosfiles/python-graph-core-1.8.1.tar.gz .
+    tar xzf python-graph-core-1.8.1.tar.gz
     cd ./python-graph-core-1.8.1
-    ./setup.py install --home=$pwd/devimage
+    ./setup.py install --prefix= --home=$pwd/devimage # some version of setup.py needs to have --prefix unset to work with --home
     popd >/dev/null
 fi
 
@@ -79,9 +80,10 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     echo "Building jsonpath..."
     mkdir build/jsonpath
     pushd build/jsonpath >/dev/null
-    tar xzf $atosfiles/jsonpath-0.53.tar.gz
+    scp $atosfiles/jsonpath-0.53.tar.gz .
+    tar xzf jsonpath-0.53.tar.gz
     cd ./jsonpath-0.53
-    ./setup.py install --home=$pwd/devimage
+    ./setup.py install --prefix= --home=$pwd/devimage
     popd >/dev/null
 fi
 
@@ -90,9 +92,10 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONLIB" = "" ]; then
     echo "Building jsonlib..."
     mkdir build/jsonlib
     pushd build/jsonlib >/dev/null
-    tar xzf $atosfiles/jsonlib-0.1.tar.gz
+    scp $atosfiles/jsonlib-0.1.tar.gz .
+    tar xzf jsonlib-0.1.tar.gz
     cd ./jsonlib-0.1
-    ./setup.py install --home=$pwd/devimage
+    ./setup.py install --prefix= --home=$pwd/devimage
     popd >/dev/null
 fi
 
@@ -100,14 +103,16 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRO_I386" = "" ]; then
     echo
     echo "Creating rhlinux-i586-5el distro in distro/rhlinux-i586-5el-rootfs..."
     mkdir distro/rhlinux-i586-5el-rootfs
-    tar xzf $atosfiles/opensuse.org.repo.RHEL_5.i586.tgz -C distro/rhlinux-i586-5el-rootfs 2>/dev/null || true
+    scp $atosfiles/opensuse.org.repo.RHEL_5.i586.tgz .
+    tar xzf opensuse.org.repo.RHEL_5.i586.tgz -C distro/rhlinux-i586-5el-rootfs 2>/dev/null || true
 fi
 
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRO_X86_64" = "" ]; then
     echo
     echo "Creating rhlinux-x86_64-5el distro in distro/rhlinux-rhlinux-x86_64-5el-rootfs..."
     mkdir distro/rhlinux-x86_64-5el-rootfs
-    tar xzf $atosfiles/opensuse.org.repo.RHEL_5.x86_64.tgz -C distro/rhlinux-x86_64-5el-rootfs 2>/dev/null || true
+    scp $atosfiles/opensuse.org.repo.RHEL_5.x86_64.tgz .
+    tar xzf opensuse.org.repo.RHEL_5.x86_64.tgz -C distro/rhlinux-x86_64-5el-rootfs 2>/dev/null || true
 fi
 
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PROOT_ATOS_I386" = "" ]; then
