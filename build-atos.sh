@@ -32,7 +32,7 @@ case $uname in
 	;;
 esac
 
-version=`cat $dir/VERSION`
+version=`cd $srcroot/atos-utils; ./config/get_version.sh`
 
 atosfiles=/home/compwork/projects/atos/
 
