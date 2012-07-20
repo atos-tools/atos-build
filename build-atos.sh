@@ -132,7 +132,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PROOT_ATOS_I386" = "" ]; then
     echo "Building proot atos for i386 on RHEL_5 distro..."
     mkdir build/proot-atos-i386
     pushd build/proot-atos-i386 >/dev/null
-    $pwd/devimage/bin/proot -W -Q $pwd/devimage/bin/qemu-i386 -b $pwd/devimage -b $srcroot/proot $pwd/distro/rhlinux-i586-5el-rootfs /usr/bin/make -f $srcroot/proot/src/GNUmakefile clean all install ENABLE_ADDONS="cc_deps cc_opts" PREFIX=$pwd/devimage/i386 CFLAGS="-Wall -O2"
+    $pwd/devimage/bin/proot -W -Q $pwd/devimage/bin/qemu-i386 -b $pwd/devimage -b $srcroot/proot $pwd/distro/rhlinux-i586-5el-rootfs /usr/bin/make -f $srcroot/proot/src/GNUmakefile clean all install ENABLE_ADDONS="cc_deps cc_opts" PREFIX=$pwd/devimage/i386 CFLAGS="-Wall -O2" STATIC_BUILD=1
     popd >/dev/null
 fi
 
@@ -141,7 +141,7 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PROOT_ATOS_X86_64" = "" ]; then
     echo "Building proot atos for x86_64 on RHEL_5 distro..."
     mkdir build/proot-atos-x86_64
     pushd build/proot-atos-x86_64 >/dev/null
-    $pwd/devimage/bin/proot -W -Q $pwd/devimage/bin/qemu-x86_64 -b $pwd/devimage -b $srcroot/proot $pwd/distro/rhlinux-x86_64-5el-rootfs /usr/bin/make -f $srcroot/proot/src/GNUmakefile clean all install ENABLE_ADDONS="cc_deps cc_opts" PREFIX=$pwd/devimage/x86_64 CFLAGS="-Wall -O2"
+    $pwd/devimage/bin/proot -W -Q $pwd/devimage/bin/qemu-x86_64 -b $pwd/devimage -b $srcroot/proot $pwd/distro/rhlinux-x86_64-5el-rootfs /usr/bin/make -f $srcroot/proot/src/GNUmakefile clean all install ENABLE_ADDONS="cc_deps cc_opts" PREFIX=$pwd/devimage/x86_64 CFLAGS="-Wall -O2" STATIC_BUILD=1
     popd >/dev/null
 fi
 
