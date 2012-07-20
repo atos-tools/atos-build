@@ -63,30 +63,6 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_QEMU" = "" ]; then
     popd >/dev/null
 fi
 
-if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRIBUTE" = "" ]; then
-    echo
-    echo "Building distribute..."
-    mkdir build/distribute
-    pushd build/distribute >/dev/null
-    scp $atosfiles/distribute-0.6.24.tar.gz .
-    tar xzf distribute-0.6.24.tar.gz
-    cd ./distribute-0.6.24
-    python ./setup.py install --prefix= --home=$pwd/devimage # some version of setup.py needs to have --prefix unset to work with --home
-    popd >/dev/null
-fi
-
-if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PYGRAPH" = "" ]; then
-    echo
-    echo "Building pygraph..."
-    mkdir build/pygraph
-    pushd build/pygraph >/dev/null
-    scp $atosfiles/python-graph-core-1.8.1.tar.gz .
-    tar xzf python-graph-core-1.8.1.tar.gz
-    cd ./python-graph-core-1.8.1
-    ./setup.py install --prefix= --home=$pwd/devimage # some version of setup.py needs to have --prefix unset to work with --home
-    popd >/dev/null
-fi
-
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     echo
     echo "Building jsonpath..."
@@ -158,8 +134,9 @@ done
 
 echo
 echo "Testing atos..."
+unset PYTHONPATH
 pushd $srcroot/atos-utils >/dev/null
-ROOT=$pwd/distimage make tests -j 4
+ROOT=$pwd/distimage make -C tests -j 4
 popd >/dev/null
 
 echo
