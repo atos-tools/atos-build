@@ -131,6 +131,9 @@ for arch in i386 x86_64; do
     mkdir -p distimage/lib/atos/$arch
     cp -a devimage/$arch/bin/proot distimage/lib/atos/$arch
 done
+mkdir -p distimage/share/atos/examples
+cp -a $srcroot/atos-utils/examples/sha1 distimage/share/atos/examples
+cp -a $srcroot/atos-utils/examples/sha1-c distimage/share/atos/examples
 
 echo
 echo "Testing atos..."
