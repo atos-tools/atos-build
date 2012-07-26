@@ -124,16 +124,13 @@ fi
 echo
 echo "Building atos..."
 pushd $srcroot/atos-utils >/dev/null
-make PREFIX=$pwd/distimage all install
+make PREFIX=$pwd/distimage all install install-shared
 cp -fr $pwd/devimage/lib/python $pwd/distimage/lib/atos/python
 popd >/dev/null
 for arch in i386 x86_64; do
     mkdir -p distimage/lib/atos/$arch
     cp -a devimage/$arch/bin/proot distimage/lib/atos/$arch
 done
-mkdir -p distimage/share/atos/examples
-cp -a $srcroot/atos-utils/examples/sha1 distimage/share/atos/examples
-cp -a $srcroot/atos-utils/examples/sha1-c distimage/share/atos/examples
 
 echo
 echo "Testing atos..."
