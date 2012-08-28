@@ -37,7 +37,7 @@ version=`cd $srcroot/atos-utils; ./config/get_version.sh`
 atosfiles=gnx5855.gnb.st.com:/home/compwork/projects/atos/
 
 echo "Building atos version $version..."
-rm -rf build distimage distro atos-$version
+rm -rf build distimage distro atos-$version atos-$version.tgz
 mkdir -p build distimage distro devimage/lib/python
 
 export PYTHONPATH=$pwd/devimage/lib/python
