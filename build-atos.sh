@@ -87,6 +87,18 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONLIB" = "" ]; then
     popd >/dev/null
 fi
 
+if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_ARGPARSE" = "" ]; then
+    echo
+    echo "Building argparse..."
+    mkdir build/argparse
+    pushd build/argparse >/dev/null
+    scp $atosfiles/argparse-1.2.1.tar.gz .
+    tar xzf argparse-1.2.1.tar.gz
+    cd ./argparse-1.2.1
+    python ./setup.py install --prefix= --home=$pwd/devimage
+    popd >/dev/null
+fi
+
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRO_I386" = "" ]; then
     echo
     echo "Creating rhlinux-i586-5el distro in distro/rhlinux-i586-5el-rootfs..."
