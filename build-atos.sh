@@ -95,6 +95,8 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_ARGPARSE" = "" ]; then
     scp $atosfiles/argparse-1.2.1.tar.gz .
     tar xzf argparse-1.2.1.tar.gz
     cd ./argparse-1.2.1
+    # Use distutils.core setup module instead of setuptools
+    sed -i 's/from setuptools import setup.*/from distutils.core import setup/' setup.py
     python ./setup.py install --prefix= --home=$pwd/devimage
     popd >/dev/null
 fi
