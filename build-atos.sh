@@ -101,6 +101,18 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_ARGPARSE" = "" ]; then
     popd >/dev/null
 fi
 
+if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DOCUTILS" = "" ]; then
+    echo
+    echo "Building docutils..."
+    mkdir build/docutils
+    pushd build/docutils >/dev/null
+    scp $atosfiles/docutils-0.9.1.tar.gz .
+    tar xzf docutils-0.9.1.tar.gz
+    cd ./docutils-0.9.1
+    python ./setup.py install --prefix= --home=$pwd/devimage
+    popd >/dev/null
+fi
+
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_DISTRO_I386" = "" ]; then
     echo
     echo "Creating rhlinux-i586-5el distro in distro/rhlinux-i586-5el-rootfs..."
@@ -138,7 +150,7 @@ fi
 echo
 echo "Building atos..."
 pushd $srcroot/atos-utils >/dev/null
-make PREFIX=$pwd/distimage all install install-shared
+make -j 4 PREFIX=$pwd/distimage all doc install install-doc install-shared
 popd >/dev/null
 mkdir -p distimage/lib/atos
 cp -a devimage/lib/python distimage/lib/atos/
