@@ -18,6 +18,7 @@
 #
 
 set -e
+
 dir=`cd \`dirname $0\`; pwd`
 srcroot=`dirname $dir`
 
@@ -41,7 +42,7 @@ rm -rf build distimage distro atos-$version atos-$version.tgz
 mkdir -p build distimage distro devimage/lib/python
 
 export PYTHONPATH=$pwd/devimage/lib/python
-
+export PATH=$pwd/devimage/bin:$PATH
 
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PROOT" = "" ]; then
     echo
