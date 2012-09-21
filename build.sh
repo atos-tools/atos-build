@@ -139,7 +139,8 @@ fi
 echo
 echo "Building atos..."
 pushd ./atos-utils >/dev/null
-make -j 4 PREFIX=$pwd/distimage all doc install install-doc install-shared
+make PREFIX=$pwd/distimage all install install-shared
+#make -j 4 PREFIX=$pwd/distimage all doc install install-doc install-shared
 popd >/dev/null
 mkdir -p distimage/lib/atos
 cp -a devimage/lib/python distimage/lib/atos/
