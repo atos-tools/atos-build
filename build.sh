@@ -27,6 +27,7 @@ set -e
 
 dir=`cd \`dirname $0\`; pwd`
 srcroot=$dir
+pwd=`pwd`
 
 if [ "$srcroot" != `pwd` ]; then
     echo "error: build.sh must be run from the source trre : $srcroot" >&2
@@ -36,13 +37,13 @@ fi
 version=`$srcroot/atos-utils/config/get_version.sh`
 
 cleanup() {
+    local code=$?
     trap - INT TERM QUIT EXIT
     [ ! -d "atos-$version" ] || rm -rf atos-$version
-    [ ! -f "atos-$version.tgz" ] || rm -rf atos-$version.tgz
+    [ ! -f "atos-$version.tgz" -a $code != 0 ] || rm -rf atos-$version.tgz
 }
 trap cleanup INT TERM QUIT EXIT
 
-pwd=$PWD
 uname=`uname -m`
 case $uname in
     i386|i486|i586|i686) arch=i386
