@@ -44,7 +44,7 @@ cleanup() {
     local code=$?
     trap - INT TERM QUIT EXIT
     [ ! -d "atos-$version" ] || rm -rf atos-$version
-    [ ! -f "atos-$version.tgz" -a $code != 0 ] || rm -rf atos-$version.tgz
+    [ ! -f "atos-$version.tgz" -o $code = 0 ] || rm -f atos-$version.tgz
 }
 trap cleanup INT TERM QUIT EXIT
 
@@ -147,7 +147,7 @@ popd >/dev/null
 mkdir -p distimage/lib/atos
 cp -a devimage/lib/python distimage/lib/atos/
 for arch in i386 x86_64; do
-#    cp -a devimage/$arch distimage/lib/atos/
+    cp -a devimage/$arch distimage/lib/atos/
     mkdir -p distimage/lib/atos/$arch/
     cp -a devimage/$arch/bin/proot distimage/lib/atos/$arch/
 done
