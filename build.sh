@@ -37,7 +37,8 @@ fi
 # Extract dependencies
 ${DEPTOOLS:-./dependencies} extract
 
-version=`$srcroot/atos-utils/config/get_version.sh`
+#version=`$srcroot/atos-utils/config/get_version.sh`
+version=`cd $srcroot/atos-utils && config/get_version.sh`
 
 cleanup() {
     local code=$?
@@ -62,6 +63,7 @@ echo "Building atos version $version..."
 rm -rf build distimage atos-$version atos-$version.tgz
 mkdir -p build distimage devimage devimage/lib/python
 
+OLD_PATH=$PATH
 export PYTHONPATH=$pwd/devimage/lib/python
 export PATH=$pwd/devimage/bin:$PATH
 
@@ -145,12 +147,15 @@ popd >/dev/null
 mkdir -p distimage/lib/atos
 cp -a devimage/lib/python distimage/lib/atos/
 for arch in i386 x86_64; do
-    cp -a devimage/$arch distimage/lib/atos/
+#    cp -a devimage/$arch distimage/lib/atos/
+    mkdir -p distimage/lib/atos/$arch/
+    cp -a devimage/$arch/bin/proot distimage/lib/atos/$arch/
 done
 
 echo
 echo "Testing atos..."
 unset PYTHONPATH
+PATH=$OLD_PATH
 pushd ./atos-utils >/dev/null
 ROOT=$pwd/distimage make -C tests -j 4
 popd >/dev/null
