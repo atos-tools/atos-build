@@ -33,6 +33,15 @@ if [ "$srcroot" != `pwd` ]; then
     exit 1
 fi
 
+version=`$srcroot/atos-utils/config/get_version.sh`
+
+cleanup() {
+    trap - INT TERM QUIT EXIT
+    [ ! -d "atos-$version" ] || rm -rf atos-$version
+    [ ! -f "atos-$version.tgz" ] || rm -rf atos-$version.tgz
+}
+trap cleanup INT TERM QUIT EXIT
+
 pwd=$PWD
 uname=`uname -m`
 case $uname in
@@ -44,11 +53,10 @@ case $uname in
 	;;
 esac
 
-version=`$srcroot/atos-utils/config/get_version.sh`
 
 echo "Building atos version $version..."
 rm -rf build distimage atos-$version atos-$version.tgz
-mkdir -p build distimage devimage/lib/python
+mkdir -p build distimage devimage devimage/lib/python
 
 ${DEPTOOLS:-./dependencies} extract
 
