@@ -34,6 +34,9 @@ if [ "$srcroot" != `pwd` ]; then
     exit 1
 fi
 
+# Extract dependencies
+${DEPTOOLS:-./dependencies} extract
+
 version=`$srcroot/atos-utils/config/get_version.sh`
 
 cleanup() {
@@ -58,8 +61,6 @@ esac
 echo "Building atos version $version..."
 rm -rf build distimage atos-$version atos-$version.tgz
 mkdir -p build distimage devimage devimage/lib/python
-
-${DEPTOOLS:-./dependencies} extract
 
 export PYTHONPATH=$pwd/devimage/lib/python
 export PATH=$pwd/devimage/bin:$PATH
