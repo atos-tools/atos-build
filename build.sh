@@ -37,7 +37,6 @@ fi
 # Extract dependencies
 ${DEPTOOLS:-./dependencies} extract
 
-#version=`$srcroot/atos-utils/config/get_version.sh`
 version=`cd $srcroot/atos-utils && config/get_version.sh`
 
 cleanup() {
@@ -45,6 +44,7 @@ cleanup() {
     trap - INT TERM QUIT EXIT
     [ ! -d "atos-$version" ] || rm -rf atos-$version
     [ ! -f "atos-$version.tgz" -o $code = 0 ] || rm -f atos-$version.tgz
+    rm -f *.tmp
 }
 trap cleanup INT TERM QUIT EXIT
 
@@ -60,6 +60,7 @@ esac
 
 
 echo "Building atos version $version..."
+[ "$NO_BUILD_DEPS" != "" ] || rm -rf devimage
 rm -rf build distimage atos-$version atos-$version.tgz
 mkdir -p build distimage devimage devimage/lib/python
 
@@ -141,16 +142,14 @@ fi
 echo
 echo "Building atos..."
 pushd ./atos-utils >/dev/null
-make PREFIX=$pwd/distimage all install install-shared
-#make -j 4 PREFIX=$pwd/distimage all doc install install-doc install-shared
+make -j 4 PREFIX=$pwd/distimage all doc install install-doc install-shared
 popd >/dev/null
 mkdir -p distimage/lib/atos
 cp -a devimage/lib/python distimage/lib/atos/
 for arch in i386 x86_64; do
     cp -a devimage/$arch distimage/lib/atos/
-    mkdir -p distimage/lib/atos/$arch/
-    cp -a devimage/$arch/bin/proot distimage/lib/atos/$arch/
 done
+
 
 echo
 echo "Testing atos..."
@@ -159,6 +158,12 @@ PATH=$OLD_PATH
 pushd ./atos-utils >/dev/null
 ROOT=$pwd/distimage make -C tests -j 4
 popd >/dev/null
+
+echo
+echo "Building manifests..."
+(cd distimage && find * -type f | xargs sha1sum 2>/dev/null) > RELEASE_MANIFEST.tmp
+mv RELEASE_MANIFEST.tmp distimage/share/atos/RELEASE_MANIFEST
+./dependencies dump_actual > distimage/share/atos/BUILD_MANIFEST
 
 echo
 echo "Packaging atos..."
