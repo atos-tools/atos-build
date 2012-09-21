@@ -1,0 +1,61 @@
+configurations:
+  default:
+   - atos-utils
+   - proot
+   - qemu
+   - jsonpath
+   - jsonlib
+   - argparse
+   - docutils
+   - rhlinux-i586-5el-rootfs
+   - rhlinux-x86_64-5el-rootfs
+
+repositories:
+  atos-utils:
+    format: git
+    repos: ssh://gitolite@codex.cro.st.com/okla/atos-utils
+    revision: e85a8dc25fc86040dd97209c7bddd9cf5ee8cb77
+  proot:
+    format: git
+    repos: ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot
+    revision: 86a874cde724ff2e4e75bfeccfffa66d693b44ad
+  qemu:
+    format: git
+    repos: ssh://codex.cro.st.com/gitroot/qemu/qemu
+    revision: 714b527573f5c8c272ea1c397be4ead3d4573ee1
+  jsonpath:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz
+    revision: 5c403247d9638ae6690e122be410a506eb1de810
+    alias: jsonpath
+    skip_dirs: 1
+  jsonlib:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonlib-0.1.tar.gz
+    revision: 6f4eb75526859631009c2359d9b0da98ddef6b6d
+    alias: jsonlib
+    skip_dirs: 1
+  argparse:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz
+    revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1
+    alias: argparse
+    skip_dirs: 1
+  docutils:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/docutils-0.9.1.tar.gz
+    revision: c55d1ccabe2de82dd93d0f14884d07bbe10a3d40
+    alias: docutils
+    skip_dirs: 1
+  rhlinux-i586-5el-rootfs:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.i586.tgz
+    revision: bf9c81d647fb05a0d3eca7055e5e2be565ffd2ba
+    alias: distros/rhlinux-i586-5el-rootfs
+    ignore_status: true
+  rhlinux-x86_64-5el-rootfs:
+    format: tar
+    repos: ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.x86_64.tgz
+    revision: d571872d60c59eeedca900b5d0e59bf16a378571
+    alias: distros/rhlinux-x86_64-5el-rootfs
+    ignore_status: true
