@@ -1,0 +1,44 @@
+=================
+ATOS build system
+=================
+
+This is the top level build system for ATOS tools and its dependencies.
+
+
+Development Build
+=================
+
+For building and developing into ATOS, follow the steps below:
+  /bin/sh (if sh is not the default shell, note that it only impacts . ./setenv.sh below)
+  git clone gitolite@codex.cro.st.com:atos/atos-build.git
+  ./dependencies extract
+Extracting component 'atos-utils'
+Extracting component 'proot'
+Extracting component 'jsonpath'
+Extracting component 'jsonlib'
+Extracting component 'argparse'
+Extracting component 'docutils'
+  . ./setenv.sh
+  make -j 8
+
+After this initial build, one can get into atos-utils and develop/push as usual:
+  cd atos-utils
+  make check
+
+For each new session do not forget to do in top level atos-build directory:
+  . ./setenv.sh
+
+
+Release Build
+=============
+
+In order to create a full ATOS release with support for all platforms, follow
+the steps below:
+  Ensure that you are on a x86_64 recent system (kernel > 2.6.14)
+  Ensure that you have at least 2Gb disk space available
+  git clone gitolite@codex.cro.st.com:atos/atos-build.git
+  ./dependencies -c release extract
+  ./build.sh
+
+For release mode, the build.sh script is used instead of the development makefile,
+this may be unified latter.
