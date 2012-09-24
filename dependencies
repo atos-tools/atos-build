@@ -47,7 +47,7 @@ set -e
 dir=`dirname $0`
 
 DEPTOOL_REPO=${DEPTOOL_REPO:-gitolite@codex.cro.st.com:ci-kb/deptools.git}
-DEPTOOL_REV=${DEPTOOL_REV:-8b03af95d9df28f2ff746518366f8b826f9a7018}
+DEPTOOL_REV=${DEPTOOL_REV:-e47e43fcb66d3f56cb897b13c498b733f7b00f3b}
 
 error() { echo "`basename $0`: error: $1" >&2; exit 1; }
 warning() { echo "`basename $0`: warning: $1" >&2; }

@@ -19,8 +19,8 @@
 #
 # Usage: ./build.sh
 #
-# This script will extract dependencies and build atos-utils along
-# with its dependencies.
+# This script will atos-utils along with its dependencies.
+# One should have run ./dependencies extract before running it.
 #
 
 set -e
@@ -33,9 +33,6 @@ if [ "$srcroot" != `pwd` ]; then
     echo "error: build.sh must be run from the source trre : $srcroot" >&2
     exit 1
 fi
-
-# Extract dependencies
-${DEPTOOLS:-./dependencies} extract
 
 version=`cd $srcroot/atos-utils && config/get_version.sh`
 
