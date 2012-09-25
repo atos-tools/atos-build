@@ -8,4 +8,4 @@
 #
 
 PATH=$PWD/devimage/bin:$PATH
-PYTHONPATH=$PWD/devimage/lib/atos/python:$PYTHONPATH
+PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH
