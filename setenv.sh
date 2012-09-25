@@ -7,5 +7,5 @@
 #   make all
 #
 
-PATH=$PWD/devimage/bin:$PATH
-PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH
+export PATH=$PWD/devimage/bin:$PATH
+export PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH
