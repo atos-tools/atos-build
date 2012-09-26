@@ -9,7 +9,7 @@ Development Build
 =================
 
 For building and developing into ATOS, follow the steps below:
-  /bin/sh (if sh is not the default shell, note that it only impacts . ./setenv.sh below)
+  /bin/bash (bash is actually only needed for the . ./setenv.sh below)
   git clone gitolite@codex.cro.st.com:atos/atos-build.git
   ./dependencies extract
 Extracting component 'atos-utils'
