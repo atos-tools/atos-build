@@ -1,7 +1,7 @@
 configurations:
-  default: [atos-utils, proot, jsonpath, jsonlib, argparse, docutils]
-  release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, rhlinux-i586-5el-rootfs,
-    rhlinux-x86_64-5el-rootfs]
+  default: [atos-utils, proot, jsonpath, jsonlib, argparse, docutils, pworker]
+  release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
+    rhlinux-i586-5el-rootfs, rhlinux-x86_64-5el-rootfs]
 repositories:
   argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
@@ -15,6 +15,7 @@ repositories:
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
     revision: 741b3ee79d47f0c6b7eb37abdfffffdae68cbdfb}
+  pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: e243f7b6f4d44279714b6a000122cd6f3774efdb}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
   rhlinux-i586-5el-rootfs: {alias: distros/rhlinux-i586-5el-rootfs, format: tar, ignore_status: true,
     repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.i586.tgz',

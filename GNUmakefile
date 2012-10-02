@@ -25,8 +25,8 @@
 srcdir=$(dir $(MAKEFILE_LIST))
 PREFIX=?/usr/local
 
-SUBDIRS=proot jsonpath jsonlib argparse docutils atos-utils
-ATOS_UTILS_DEPS=proot jsonpath jsonlib argparse docutils 
+SUBDIRS=proot jsonpath jsonlib argparse docutils pworker atos-utils
+ATOS_UTILS_DEPS=proot jsonpath jsonlib argparse docutils pworker
 JSONLIB_DEPS=jsonpath
 
 .PHONY: all $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS))
@@ -52,20 +52,20 @@ all-proot clean-proot distclean-proot: %-proot:
 dev-proot: all-proot
 	$(MAKE) -C $(srcdir)proot/src install PREFIX=$(abspath devimage)
 
-all-jsonpath all-jsonlib all-argparse all-docutils: all-%:
+all-jsonpath all-jsonlib all-argparse all-docutils all-pworker: all-%:
 	cd $(srcdir)$* && \
 	sed -i 's/from setuptools import setup.*/from distutils.core import setup/' setup.py && \
 	python setup.py build
 
-dev-jsonpath dev-jsonlib dev-argparse dev-docutils: dev-%: all-%
+dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker: dev-%: all-%
 	cd $(srcdir)$* && python setup.py install --prefix= --home=$(abspath devimage)
 
 clean: $(addprefix clean-, $(SUBDIRS))
 
-clean-jsonpath clean-jsonlib clean-argparse clean-docutils: clean-%:
+clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker: clean-%:
 	cd $(srcdir)$* && python setup.py clean
 
-distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils: distclean-%: clean-%
+distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker: distclean-%: clean-%
 
 distclean: $(addprefix distclean-, $(SUBDIRS))
 	rm -rf devimage

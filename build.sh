@@ -85,6 +85,14 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_QEMU" = "" ]; then
     popd >/dev/null
 fi
 
+if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PWORKER" = "" ]; then
+    echo
+    echo "Building pworker..."
+    pushd ./pworker >/dev/null
+    ./setup.py install --prefix= --home=$pwd/devimage
+    popd >/dev/null
+fi
+
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     echo
     echo "Building jsonpath..."
