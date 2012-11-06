@@ -32,8 +32,8 @@ installdir=$(currentdir)/devimage
 
 PREFIX=?/usr/local
 
-SUBDIRS=proot jsonpath jsonlib argparse docutils pworker atos-utils
-ATOS_UTILS_DEPS=proot jsonpath jsonlib argparse docutils pworker
+SUBDIRS=proot qemu jsonpath jsonlib argparse docutils pworker atos-utils
+ATOS_UTILS_DEPS=proot qemu jsonpath jsonlib argparse docutils pworker
 JSONLIB_DEPS=jsonpath
 
 .PHONY: all $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS))
@@ -58,6 +58,17 @@ all-proot clean-proot distclean-proot: %-proot:
 
 dev-proot: all-proot
 	$(MAKE) -C $(srcdir)/proot/src install PREFIX=$(installdir)
+
+configure-qemu: %-qemu:
+	cd $(srcdir)/qemu && ./configure --target-list=i386-linux-user,x86_64-linux-user,sh4-linux-user,arm-linux-user --enable-tcg-plugin --prefix=$(installdir)
+
+all-qemu clean-qemu distclean-qemu: %-qemu:
+	$(MAKE) -C $(srcdir)/qemu $*
+
+all-qemu: configure-qemu
+
+dev-qemu: all-qemu
+	$(MAKE) -C $(srcdir)/qemu install
 
 all-jsonpath all-jsonlib all-argparse all-docutils all-pworker: all-%:
 	cd $(srcdir)/$* && \

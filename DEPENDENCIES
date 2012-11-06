@@ -1,5 +1,5 @@
 configurations:
-  default: [atos-utils, proot, jsonpath, jsonlib, argparse, docutils, pworker]
+  default: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker]
   release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
     rhlinux-i586-5el-rootfs, rhlinux-x86_64-5el-rootfs]
 repositories:
