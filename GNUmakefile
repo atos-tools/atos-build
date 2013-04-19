@@ -32,8 +32,8 @@ installdir=$(currentdir)/devimage
 
 PREFIX=?/usr/local
 
-SUBDIRS=proot qemu jsonpath jsonlib argparse docutils pworker atos-utils
-ATOS_UTILS_DEPS=proot qemu jsonpath jsonlib argparse docutils pworker
+SUBDIRS=proot qemu jsonpath jsonlib argparse docutils pworker requests atos-utils
+ATOS_UTILS_DEPS=proot qemu jsonpath jsonlib argparse docutils pworker requests
 JSONLIB_DEPS=jsonpath
 
 .PHONY: all $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS))
@@ -70,20 +70,20 @@ all-qemu: configure-qemu
 dev-qemu: all-qemu
 	$(MAKE) -C $(srcdir)/qemu install
 
-all-jsonpath all-jsonlib all-argparse all-docutils all-pworker: all-%:
+all-jsonpath all-jsonlib all-argparse all-docutils all-pworker all-requests: all-%:
 	cd $(srcdir)/$* && \
 	sed -i 's/from setuptools import setup.*/from distutils.core import setup/' setup.py && \
 	python setup.py build
 
-dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker: dev-%: all-%
+dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker dev-requests: dev-%: all-%
 	cd $(srcdir)/$* && python setup.py install --prefix= --home=$(installdir)
 
 clean: $(addprefix clean-, $(SUBDIRS))
 
-clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker: clean-%:
+clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker clean-requests: clean-%:
 	cd $(srcdir)/$* && python setup.py clean
 
-distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker: distclean-%: clean-%
+distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker distclean-requests: distclean-%: clean-%
 
 distclean: $(addprefix distclean-, $(SUBDIRS))
 	rm -rf devimage

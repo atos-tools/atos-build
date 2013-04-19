@@ -1,6 +1,6 @@
 configurations:
-  default: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker]
-  release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
+  default: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker, requests]
+  release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker, requests,
     rhlinux-i586-5el-rootfs, rhlinux-x86_64-5el-rootfs]
 repositories:
   argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
@@ -17,6 +17,8 @@ repositories:
     revision: 741b3ee79d47f0c6b7eb37abdfffffdae68cbdfb}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
+  requests: {alias: requests, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/python-requests-1.2.0.tar.gz',
+    revision: c88fec393838a35915642896652a99a740dd4d9a, skip_dirs: 1}
   rhlinux-i586-5el-rootfs: {alias: distros/rhlinux-i586-5el-rootfs, format: tar, ignore_status: true,
     repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.i586.tgz',
     revision: bf9c81d647fb05a0d3eca7055e5e2be565ffd2ba}
