@@ -93,6 +93,14 @@ if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_PWORKER" = "" ]; then
     popd >/dev/null
 fi
 
+if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_REQUESTS" = "" ]; then
+    echo
+    echo "Building requests..."
+    pushd ./requests >/dev/null
+    ./setup.py install --prefix= --home=$pwd/devimage
+    popd >/dev/null
+fi
+
 if [ "$NO_BUILD_DEPS" = "" -a "$NO_BUILD_JSONPATH" = "" ]; then
     echo
     echo "Building jsonpath..."
