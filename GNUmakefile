@@ -32,8 +32,9 @@ installdir=$(currentdir)/devimage
 
 PREFIX=?/usr/local
 
-SUBDIRS=proot qemu jsonpath jsonlib argparse docutils pworker requests atos-utils
-ATOS_UTILS_DEPS=proot qemu jsonpath jsonlib argparse docutils pworker requests
+SUBDIRS=talloc proot qemu jsonpath jsonlib argparse docutils pworker requests atos-utils
+PROOT_DEPS=talloc
+ATOS_UTILS_DEPS=talloc proot qemu jsonpath jsonlib argparse docutils pworker requests
 JSONLIB_DEPS=jsonpath
 
 .PHONY: all $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS))
@@ -43,6 +44,8 @@ all: $(addprefix dev-, $(SUBDIRS))
 all-atos-utils: $(addprefix dev-, $(ATOS_UTILS_DEPS))
 
 all-jsonlib: $(addprefix dev-, $(JSONLIB_DEPS))
+
+all-proot: $(addprefix dev-, $(PROOT_DEPS))
 
 all-atos-utils:
 	$(MAKE) -C $(srcdir)/atos-utils all doc
@@ -54,10 +57,24 @@ dev-atos-utils: all-atos-utils
 	$(MAKE) -C $(srcdir)/atos-utils install install-doc install-shared PREFIX=$(installdir)
 
 all-proot clean-proot distclean-proot: %-proot:
-	$(MAKE) -C $(srcdir)/proot/src $* ENABLE_ADDONS="cc_deps cc_opts" CFLAGS="-Wall -O2" STATIC_BUILD=1
+	$(MAKE) -C $(srcdir)/proot/src $* ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
 
 dev-proot: all-proot
 	$(MAKE) -C $(srcdir)/proot/src install PREFIX=$(installdir)
+
+configure-talloc:
+	cd $(srcdir)/talloc && ./configure --disable-python --prefix=$(installdir)
+
+all-talloc: configure-talloc
+	$(MAKE) -C $(srcdir)/talloc all
+	cd $(srcdir)/talloc/bin/default && ar qf libtalloc.a talloc_3.o lib/replace/replace_2.o lib/replace/getpass_2.o
+
+dev-talloc: all-talloc
+	$(MAKE) -C $(srcdir)/talloc install
+	cp -a $(srcdir)/talloc/bin/default/libtalloc.a $(installdir)/lib
+
+clean-talloc distclean-talloc: %-talloc:
+	$(MAKE) -C $(srcdir)/talloc $*
 
 configure-qemu: %-qemu:
 	cd $(srcdir)/qemu && ./configure --target-list=i386-linux-user,x86_64-linux-user,sh4-linux-user,arm-linux-user --enable-tcg-plugin --prefix=$(installdir)

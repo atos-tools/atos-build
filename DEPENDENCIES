@@ -1,7 +1,6 @@
 configurations:
-  default: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
-    requests]
-  release: [atos-utils, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
+  default: [atos-utils, talloc, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker, requests]
+  release: [atos-utils, talloc, proot, qemu, jsonpath, jsonlib, argparse, docutils, pworker,
     requests, rhlinux-i586-5el-rootfs, rhlinux-x86_64-5el-rootfs]
 repositories:
   argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
@@ -14,8 +13,10 @@ repositories:
     revision: 6f4eb75526859631009c2359d9b0da98ddef6b6d, skip_dirs: 1}
   jsonpath: {alias: jsonpath, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz',
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
+  talloc: {alias: talloc, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/talloc-2.0.8.tar.gz',
+    revision: 5ca7710a3f95a1db873c97fcf83f92dddfd57907, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
-    revision: 741b3ee79d47f0c6b7eb37abdfffffdae68cbdfb}
+    revision: 30eeeacde7517a0a2705c96e2ede3ab93f048ed8}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
   requests: {alias: requests, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/python-requests-1.2.0.tar.gz',
