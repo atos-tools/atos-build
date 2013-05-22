@@ -20,11 +20,13 @@
 # Development mode usage:
 #    cd atos-build
 #    ./dependencies extract
+#    . ./setenv.sh
 #    make -j 4 all
 #
 # Release mode usage:
 #    cd atos-build
 #    ./dependencies -c releqse extract
+#    . ./setenv.sh
 #    make -j 4 release
 #
 SHELL=/bin/sh

@@ -31,4 +31,5 @@ if [ "$dir" != `pwd` ]; then
     exit 1
 fi
 
-exec make release
+. ./setenv.sh
+exec make -j 4 release

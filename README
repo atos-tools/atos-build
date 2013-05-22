@@ -11,6 +11,7 @@ Development Build
 For building and developing into ATOS, follow the steps below:
   /bin/bash (bash is actually only needed for the . ./setenv.sh below)
   git clone gitolite@codex.cro.st.com:atos/atos-build.git
+  . ./setenv.sh
   ./dependencies extract
 Extracting component 'atos-utils'
 Extracting component 'proot'
@@ -19,7 +20,6 @@ Extracting component 'jsonlib'
 Extracting component 'argparse'
 Extracting component 'docutils'
   make -j 4
-  . ./setenv.sh
 
 After this initial build, one can get into atos-utils and develop/push as usual:
   cd atos-utils
@@ -38,6 +38,7 @@ the steps below:
   Ensure that you have at least 2Gb disk space available
   git clone gitolite@codex.cro.st.com:atos/atos-build.git
   ./dependencies -c release extract
+  . ./setenv.sh
   make -j 4 release  
 
 This will create in the curerent directory a atos-<version>.tgz binary
