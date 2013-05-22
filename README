@@ -18,8 +18,8 @@ Extracting component 'jsonpath'
 Extracting component 'jsonlib'
 Extracting component 'argparse'
 Extracting component 'docutils'
+  make -j 4
   . ./setenv.sh
-  make -j 8
 
 After this initial build, one can get into atos-utils and develop/push as usual:
   cd atos-utils
@@ -38,7 +38,7 @@ the steps below:
   Ensure that you have at least 2Gb disk space available
   git clone gitolite@codex.cro.st.com:atos/atos-build.git
   ./dependencies -c release extract
-  ./build.sh
+  make -j 4 release  
 
-For release mode, the build.sh script is used instead of the development makefile,
-this may be unified latter.
+This will create in the curerent directory a atos-<version>.tgz binary
+archive.
