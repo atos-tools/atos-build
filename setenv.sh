@@ -3,29 +3,22 @@
 #
 # usage:
 #   cd atos-build
-#   source setenv.sh
-#   make all
+#   . ./setenv.sh
 #
 
 deactivate() {
   # Restore old values
-  if [ -n $"_OLD_ATOS_PATH" ]; then
-    PATH="$_OLD_ATOS_PATH"
-    export PATH
-    unset _OLD_ATOS_PATH
-  fi
+  PATH="$_OLD_ATOS_PATH" && export PATH
+  unset _OLD_ATOS_PATH
 
-  if [ -n $"_OLD_ATOS_PS1" ]; then
-    PS1="$_OLD_ATOS_PS1"
-    export PS1
-    unset _OLD_ATOS_PS1
-  fi
+  unset PYTHONPATH && [ "${_OLD_ATOS_PYTHONPATH+set}" = set ] && PYTHONPATH="$_OLD_ATOS_PYTHONPATH" && export PYTHONPATH
+  unset _OLD_ATOS_PYTHONPATH
 
-  if [ -n $"_OLD_ATOS_PYTHONPATH" ]; then
-    PYTHONPATH="$_OLD_ATOS_PYTHONPATH"
-    export PYTHONPATH
-    unset _OLD_ATOS_PYTHONPATH
-  fi
+  unset PYTHONSTARTUP && [ "${_OLD_ATOS_PYTHONSTARTUP+set}" = set ] && PYTHONSTARTUP="$_OLD_ATOS_PYTHONSTARTUP" && export PYTHONSTARTUP
+  unset _OLD_ATOS_PYTHONSTARTUP
+
+  unset PS1 && [ "${_OLD_ATOS_PS1+set}" = set ] && PS1="$_OLD_ATOS_PS1" && export PS1
+  unset _OLD_ATOS_PS1
 
   # Make bash and zsh forget about previous commands
   # Overwise the last PATH change will not be taken into account
@@ -33,23 +26,36 @@ deactivate() {
     hash -r
   fi
 
+  unset ATOS_BUILD_SETENV
+
   # Self destroy
   unset -f deactivate
 }
 
+if [ -n "$ATOS_BUILD_SETENV" ]; then
+  echo "error: already in ATOS environment. Execute 'deactivate' to get out." >&2
+else
+  echo
+  echo "Setting up ATOS environment. Execute 'deactivate' to get out."
+  echo
 
-# Save old values
-_OLD_ATOS_PATH="$PATH"
-_OLD_ATOS_PYTHONPATH="$PYTHONPATH"
-_OLD_ATOS_PS1="$PS1"
+  ATOS_BUILD_SETENV=1
 
-# Export the new ones
-export PATH=$PWD/devimage/bin:$PATH
-export PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH
-export PS1="(ATOS) $PS1"
+  # Save old values
+  _OLD_ATOS_PATH="$PATH"
+  unset _OLD_ATOS_PYTHONPATH && [ "${PYTHONPATH+set}" = set ] && _OLD_ATOS_PYTHONPATH="$PYTHONPATH"
+  unset _OLD_ATOS_PYTHONSTARTUP && [ "${PYTHONSTARTUP+set}" = set ] && _OLD_ATOS_PYTHONSTARTUP="$PYTHONSTARTUP"
+  unset _OLD_ATOS_PS1 && [ "${PS1+set}" = set ] && _OLD_ATOS_PS1="$PS1"
 
-# Makes bash and zsh to forget about previous command and take PATH change into
-# account
-if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
+  # Export the new ones
+  PATH=$PWD/devimage/bin:$PATH && export PATH
+  PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH && export PYTHONPATH
+  unset PYTHONSTARTUP
+  PS1="(atos-build) $PS1" && export PS1
+
+  # Makes bash and zsh to forget about previous command and take PATH change into
+  # account
+  if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
     hash -r
+  fi
 fi
