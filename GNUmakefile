@@ -25,7 +25,7 @@
 #
 # Release mode usage:
 #    cd atos-build
-#    ./dependencies -c releqse extract
+#    ./dependencies -c release extract
 #    . ./setenv.sh
 #    make -j 4 release
 #
@@ -64,18 +64,21 @@ default:
 all-atos-utils:
 	$(MAKE) -C $(srcdir)/atos-utils all doc
 
-clean-atos-utils distclean-atos-utils: %-atos-utils:
-	$(MAKE) -C $(srcdir)/atos-utils $*
-
 dev-atos-utils: all-atos-utils
 	$(MAKE) -C $(srcdir)/atos-utils install install-doc install-shared PREFIX=$(installdir)
 
-all-proot clean-proot distclean-proot: %-proot:
+clean-atos-utils distclean-atos-utils: %-atos-utils:
+	-$(MAKE) -C $(srcdir)/atos-utils $*
+
+all-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
 
 dev-proot: all-proot
 	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install PREFIX=$(installdir)
+
+clean-proot distclean-proot: %-proot:
+	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* ENABLE_ADDONS="cc_opts" STATIC_BUILD=1
 
 configure-talloc:
 	mkdir -p $(builddir)
@@ -91,7 +94,7 @@ dev-talloc: all-talloc
 	cp -a $(builddir)/talloc/bin/default/libtalloc.a $(installdir)/lib
 
 clean-talloc distclean-talloc: %-talloc:
-	$(MAKE) -C $(builddir)/talloc $*
+	-$(MAKE) -C $(builddir)/talloc $*
 
 configure-qemu:
 	cd $(srcdir)/qemu && ./configure --target-list=i386-linux-user,x86_64-linux-user,sh4-linux-user,arm-linux-user --enable-tcg-plugin --prefix=$(installdir)
@@ -103,7 +106,7 @@ dev-qemu: all-qemu
 	$(MAKE) -C $(srcdir)/qemu install
 
 clean-qemu distclean-qemu: %-qemu:
-	$(MAKE) -C $(srcdir)/qemu $*
+	-$(MAKE) -C $(srcdir)/qemu $*
 
 all-jsonpath all-jsonlib all-argparse all-docutils all-pworker all-requests: all-%:
 	cd $(srcdir)/$* && \
@@ -114,7 +117,7 @@ dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker dev-requests: dev
 	cd $(srcdir)/$* && python setup.py install --prefix= --home=$(installdir)
 
 clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker clean-requests: clean-%:
-	cd $(srcdir)/$* && python setup.py clean
+	-cd $(srcdir)/$* && python setup.py clean
 
 distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker distclean-requests: distclean-%: clean-%
 
@@ -125,14 +128,18 @@ distclean:
 	-$(MAKE) -k $(addprefix distclean-, $(SUBDIRS))
 	rm -rf $(builddir) $(installdir) $(distdir) atos-$(atos_version)
 
+CLEAN_ENV=env PATH=/usr/bin:/bin LD_LIBRARY_PATH= PYTHONPATH= PYTHONSTARTUP=
+PROOT_i386=$(installdir)/bin/proot -B -r $(srcdir)/distros/rhlinux-i586-5el-rootfs
+PROOT_x86_64=$(installdir)/bin/proot -B -r $(srcdir)/distros/rhlinux-x86_64-5el-rootfs
+
 release:
 	$(MAKE) distclean
 	$(MAKE) dev-talloc
 	$(MAKE) dev-proot
-	$(installdir)/bin/proot -r $(srcdir)/distros/rhlinux-i586-5el-rootfs -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-talloc
-	$(installdir)/bin/proot -r $(srcdir)/distros/rhlinux-i586-5el-rootfs -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-proot
-	$(installdir)/bin/proot -r $(srcdir)/distros/rhlinux-x86_64-5el-rootfs -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-talloc
-	$(installdir)/bin/proot -r $(srcdir)/distros/rhlinux-x86_64-5el-rootfs -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-proot
+	$(CLEAN_ENV) $(PROOT_i386) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-talloc
+	$(CLEAN_ENV) $(PROOT_i386) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-proot
+	$(CLEAN_ENV) $(PROOT_x86_64) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-talloc
+	$(CLEAN_ENV) $(PROOT_x86_64) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-proot
 	$(MAKE) dev-jsonpath
 	$(MAKE) dev-jsonlib
 	$(MAKE) dev-argparse
