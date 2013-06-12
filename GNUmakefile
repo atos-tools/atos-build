@@ -136,10 +136,11 @@ release:
 	$(MAKE) distclean
 	$(MAKE) dev-talloc
 	$(MAKE) dev-proot
-	$(CLEAN_ENV) $(PROOT_i386) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-talloc
-	$(CLEAN_ENV) $(PROOT_i386) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-proot
-	$(CLEAN_ENV) $(PROOT_x86_64) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-talloc
-	$(CLEAN_ENV) $(PROOT_x86_64) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-proot
+	# There may be issues in parallel make when running make across platforms, disable with -j1 on guest side
+	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-talloc
+	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-proot
+	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-talloc
+	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-proot
 	$(MAKE) dev-jsonpath
 	$(MAKE) dev-jsonlib
 	$(MAKE) dev-argparse
