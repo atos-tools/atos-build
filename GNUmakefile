@@ -72,13 +72,13 @@ clean-atos-utils distclean-atos-utils: %-atos-utils:
 
 all-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
 
 dev-proot: all-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1 PREFIX=$(installdir)
 
 clean-proot distclean-proot: %-proot:
-	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* ENABLE_ADDONS="cc_opts" STATIC_BUILD=1
+	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
 
 configure-talloc:
 	mkdir -p $(builddir)
