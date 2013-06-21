@@ -45,7 +45,7 @@ distdir=$(currentdir)/distimage
 
 SUBDIRS=talloc proot qemu jsonpath jsonlib argparse docutils pworker requests atos-utils
 
-.PHONY: all default release $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS))
+.PHONY: all default release $(addprefix configure-, $(SUBDIRS)) $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS)) $(addprefix all-static-, $(SUBDIRS)) $(addprefix static-, $(SUBDIRS))
 
 all: default
 
@@ -72,13 +72,20 @@ clean-atos-utils distclean-atos-utils: %-atos-utils:
 
 all-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc"
 
 dev-proot: all-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1 PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc" PREFIX=$(installdir)
+
+all-static-proot:
+	mkdir -p $(builddir)/proot
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1
+
+static-proot: all-static-proot
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1 PREFIX=$(installdir)
 
 clean-proot distclean-proot: %-proot:
-	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L $(installdir)/lib -ltalloc" STATIC_BUILD=1
+	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts"
 
 configure-talloc:
 	mkdir -p $(builddir)
@@ -90,6 +97,9 @@ all-talloc: configure-talloc
 	cd $(builddir)/talloc/bin/default && ar qf libtalloc.a talloc_3.o lib/replace/replace_2.o lib/replace/getpass_2.o
 
 dev-talloc: all-talloc
+	$(MAKE) -C $(builddir)/talloc install
+
+static-talloc: all-talloc
 	$(MAKE) -C $(builddir)/talloc install
 	cp -a $(builddir)/talloc/bin/default/libtalloc.a $(installdir)/lib
 
@@ -137,10 +147,10 @@ release:
 	$(MAKE) dev-talloc
 	$(MAKE) dev-proot
 	# There may be issues in parallel make when running make across platforms, disable with -j1 on guest side
-	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-talloc
-	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 dev-proot
-	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-talloc
-	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 dev-proot
+	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 static-talloc
+	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 static-proot
+	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-talloc
+	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-proot
 	$(MAKE) dev-jsonpath
 	$(MAKE) dev-jsonlib
 	$(MAKE) dev-argparse

@@ -11,6 +11,9 @@ deactivate() {
   PATH="$_OLD_ATOS_PATH" && export PATH
   unset _OLD_ATOS_PATH
 
+  unset LD_LIBRARY_PATH && [ "${_OLD_LD_LIBRARY_PATH+set}" = set ] && LD_LIBRARY_PATH="$_OLD_LD_LIBRARY_PATH" && export LD_LIBRARY_PATH
+  unset _OLD_LD_LIBRARY_PATH
+
   unset PYTHONPATH && [ "${_OLD_ATOS_PYTHONPATH+set}" = set ] && PYTHONPATH="$_OLD_ATOS_PYTHONPATH" && export PYTHONPATH
   unset _OLD_ATOS_PYTHONPATH
 
@@ -43,12 +46,14 @@ else
 
   # Save old values
   _OLD_ATOS_PATH="$PATH"
+  unset _OLD_LD_LIBRARY_PATH && [ "${LD_LIBRARY_PATH+set}" = set ] && _OLD_ATOS_PYTHONPATH="$LD_LIBRARY_PATH"
   unset _OLD_ATOS_PYTHONPATH && [ "${PYTHONPATH+set}" = set ] && _OLD_ATOS_PYTHONPATH="$PYTHONPATH"
   unset _OLD_ATOS_PYTHONSTARTUP && [ "${PYTHONSTARTUP+set}" = set ] && _OLD_ATOS_PYTHONSTARTUP="$PYTHONSTARTUP"
   unset _OLD_ATOS_PS1 && [ "${PS1+set}" = set ] && _OLD_ATOS_PS1="$PS1"
 
   # Export the new ones
   PATH=$PWD/devimage/bin:$PATH && export PATH
+  LD_LIBRARY_PATH=$PWD/devimage/lib:$LD_LIBRARY_PATH && export LD_LIBRARY_PATH
   PYTHONPATH=$PWD/devimage/lib/python:$PYTHONPATH && export PYTHONPATH
   unset PYTHONSTARTUP
   PS1="(atos-build) $PS1" && export PS1
