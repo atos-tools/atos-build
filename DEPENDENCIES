@@ -7,7 +7,7 @@ repositories:
   argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
   atos-utils: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/okla/atos-utils',
-    revision: 561c078e276739afc012eaad9bdd392aaaaa0933}
+    revision: 12adf60aa808bf68da023864ca41a9aa8f25b4e2}
   docutils: {alias: docutils, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/docutils-0.9.1.tar.gz',
     revision: c55d1ccabe2de82dd93d0f14884d07bbe10a3d40, skip_dirs: 1}
   jsonlib: {alias: jsonlib, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonlib-0.1.tar.gz',
