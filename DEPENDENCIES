@@ -15,7 +15,7 @@ repositories:
   jsonpath: {alias: jsonpath, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz',
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
-    revision: f58dc31ed954e6c3803c006f9e609e6d061d16bd}
+    revision: 0f5c96172f7766f8a7025384ef27de86a08b15f7}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
   requests: {alias: requests, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/python-requests-1.2.0.tar.gz',
