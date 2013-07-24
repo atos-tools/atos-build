@@ -72,20 +72,20 @@ clean-atos-utils distclean-atos-utils: %-atos-utils:
 
 all-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc"
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc"
 
 dev-proot: all-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc" PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-L$(installdir)/lib -ltalloc" PREFIX=$(installdir)
 
 all-static-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1
 
 static-proot: all-static-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1 PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include" LDFLAGS="-static -L$(installdir)/lib -ltalloc" STATIC_BUILD=1 PREFIX=$(installdir)
 
 clean-proot distclean-proot: %-proot:
-	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts"
+	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts reloc_exec"
 
 configure-talloc:
 	mkdir -p $(builddir)
