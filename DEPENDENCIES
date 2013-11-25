@@ -7,7 +7,7 @@ repositories:
   argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
   atos-utils: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/okla/atos-utils',
-    revision: 1cc37b2932d5d54830d085532240dd9a64908abc}
+    revision: e4bfa2b1c2da146f3202dc13da23d426afe530bb}
   docutils: {alias: docutils, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/docutils-0.9.1.tar.gz',
     revision: c55d1ccabe2de82dd93d0f14884d07bbe10a3d40, skip_dirs: 1}
   jsonlib: {alias: jsonlib, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonlib-0.1.tar.gz',
@@ -15,7 +15,7 @@ repositories:
   jsonpath: {alias: jsonpath, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz',
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
-    revision: fe735a3881c31ee95bf409d1630ff976d752e395}
+    revision: fbc72e2b1da5cd5ef56ded1dba7d1752fafe2999}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
   requests: {alias: requests, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/python-requests-1.2.0.tar.gz',
