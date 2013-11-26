@@ -14,6 +14,8 @@ repositories:
     revision: 6f4eb75526859631009c2359d9b0da98ddef6b6d, skip_dirs: 1}
   jsonpath: {alias: jsonpath, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz',
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
+  libarchive: {alias: libarchive, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/libarchive-3.1.2.tar.gz',
+    revision: 6a991777ecb0f890be931cec4aec856d1a195489, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
     revision: fbc72e2b1da5cd5ef56ded1dba7d1752fafe2999}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
@@ -30,6 +32,4 @@ repositories:
     revision: 5ca7710a3f95a1db873c97fcf83f92dddfd57907, skip_dirs: 1}
   uthash: {alias: uthash, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/uthash-master.zip',
     revision: 91eee9b5d7835431fdc4a5d6c9711c8c1a734c41, skip_dirs: 1}
-  libarchive: {alias: libarchive, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/libarchive-3.1.2.tar.gz',
-    revision: 6a991777ecb0f890be931cec4aec856d1a195489, skip_dirs: 1}
 
