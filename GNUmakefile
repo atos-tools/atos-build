@@ -182,8 +182,10 @@ release:
 	cp -a $(installdir)/lib/python $(distdir)/lib/atos
 	mkdir -p $(distdir)/lib/atos/i386/bin
 	cp -a $(installdir)/i386/bin/proot $(distdir)/lib/atos/i386/bin
+	cd $(distdir)/lib/atos/i386/bin/ && ln -sf proot care
 	mkdir -p $(distdir)/lib/atos/x86_64/bin
 	cp -a $(installdir)/x86_64/bin/proot $(distdir)/lib/atos/x86_64/bin
+	cd $(distdir)/lib/atos/x86_64/bin/ && ln -sf proot care
 	env ROOT=$(distdir) $(MAKE) -C $(srcdir)/atos-utils tests
 	cd $(distdir) && find * -type f | xargs sha1sum 2>/dev/null > $(srcdir)/RELEASE_MANIFEST.tmp
 	mv $(srcdir)/RELEASE_MANIFEST.tmp $(distdir)/share/atos/RELEASE_MANIFEST
