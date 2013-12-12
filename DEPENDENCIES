@@ -17,7 +17,7 @@ repositories:
   libarchive: {alias: libarchive, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/libarchive-3.1.2.tar.gz',
     revision: 6a991777ecb0f890be931cec4aec856d1a195489, skip_dirs: 1}
   proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
-    revision: 34920e935f320101b088eea8500415359c941179}
+    revision: 6bf076bd5a41298b6288e889e826fa0068e57cdb}
   pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
   qemu: {format: git, repos: 'ssh://codex.cro.st.com/gitroot/qemu/qemu', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
   requests: {alias: requests, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/python-requests-1.2.0.tar.gz',

@@ -73,20 +73,22 @@ clean-atos-utils distclean-atos-utils: %-atos-utils:
 
 all-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false CARE=1 ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-L$(installdir)/lib -ltalloc -larchive -lz"
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile proot care GIT=false CARE_BUILD_ENV=ok ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-L$(installdir)/lib -ltalloc -larchive -lz"
 
 dev-proot: all-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false CARE=1 ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-L$(installdir)/lib -ltalloc -larchive -lz" PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install-care GIT=false CARE_BUILD_ENV=ok ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-L$(installdir)/lib -ltalloc -larchive -lz" PREFIX=$(installdir)
+	cp -a $(installdir)/bin/care $(installdir)/bin/proot
 
 all-static-proot:
 	mkdir -p $(builddir)/proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile all GIT=false CARE=1 ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-static -L$(installdir)/lib -ltalloc -larchive -lz" STATIC_BUILD=1
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile proot care GIT=false CARE_BUILD_ENV=ok ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-static -L$(installdir)/lib -ltalloc -larchive -lz" STATIC_BUILD=1
 
 static-proot: all-static-proot
-	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install GIT=false CARE=1 ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-static -L$(installdir)/lib -ltalloc -larchive -lz" STATIC_BUILD=1 PREFIX=$(installdir)
+	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install-care GIT=false CARE_BUILD_ENV=ok ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-static -L$(installdir)/lib -ltalloc -larchive -lz" STATIC_BUILD=1 PREFIX=$(installdir)
+	cp -a $(installdir)/bin/care $(installdir)/bin/proot
 
 clean-proot distclean-proot: %-proot:
-	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false CARE=1 ENABLE_ADDONS="cc_opts reloc_exec"
+	-$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile $* GIT=false ENABLE_ADDONS="cc_opts reloc_exec"
 
 configure-libarchive:
 	mkdir -p $(builddir)
@@ -182,10 +184,10 @@ release:
 	cp -a $(installdir)/lib/python $(distdir)/lib/atos
 	mkdir -p $(distdir)/lib/atos/i386/bin
 	cp -a $(installdir)/i386/bin/proot $(distdir)/lib/atos/i386/bin
-	cd $(distdir)/lib/atos/i386/bin/ && ln -sf proot care
+	cp -a $(installdir)/i386/bin/care $(distdir)/lib/atos/i386/bin
 	mkdir -p $(distdir)/lib/atos/x86_64/bin
 	cp -a $(installdir)/x86_64/bin/proot $(distdir)/lib/atos/x86_64/bin
-	cd $(distdir)/lib/atos/x86_64/bin/ && ln -sf proot care
+	cp -a $(installdir)/x86_64/bin/care $(distdir)/lib/atos/x86_64/bin
 	env ROOT=$(distdir) $(MAKE) -C $(srcdir)/atos-utils tests
 	cd $(distdir) && find * -type f | xargs sha1sum 2>/dev/null > $(srcdir)/RELEASE_MANIFEST.tmp
 	mv $(srcdir)/RELEASE_MANIFEST.tmp $(distdir)/share/atos/RELEASE_MANIFEST
