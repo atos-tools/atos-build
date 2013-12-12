@@ -91,7 +91,7 @@ clean-proot distclean-proot: %-proot:
 configure-libarchive:
 	mkdir -p $(builddir)
 	cp -a $(srcdir)/libarchive $(builddir)
-	cd $(builddir)/libarchive && ./configure --prefix=$(installdir)
+	cd $(builddir)/libarchive && ./configure --prefix=$(installdir) --libdir=$(installdir)/lib
 
 all-libarchive: configure-libarchive
 	$(MAKE) -C $(builddir)/libarchive
