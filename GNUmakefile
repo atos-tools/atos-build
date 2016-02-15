@@ -43,7 +43,7 @@ installdir=$(currentdir)/devimage
 builddir=$(currentdir)/build
 distdir=$(currentdir)/distimage
 
-SUBDIRS=talloc proot qemu jsonpath jsonlib argparse docutils pworker requests atos-utils
+SUBDIRS=talloc proot qemu jsonpath jsonlib argparse docutils pworker atos-utils
 
 .PHONY: all default release $(addprefix configure-, $(SUBDIRS)) $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS)) $(addprefix all-static-, $(SUBDIRS)) $(addprefix static-, $(SUBDIRS))
 
@@ -59,7 +59,6 @@ default:
 	$(MAKE) dev-argparse
 	$(MAKE) dev-docutils
 	$(MAKE) dev-pworker
-	$(MAKE) dev-requests
 	$(MAKE) dev-atos-utils
 
 all-atos-utils:
@@ -138,18 +137,18 @@ dev-qemu: all-qemu
 clean-qemu distclean-qemu: %-qemu:
 	-$(MAKE) -C $(srcdir)/qemu $*
 
-all-jsonpath all-jsonlib all-argparse all-docutils all-pworker all-requests: all-%:
+all-jsonpath all-jsonlib all-argparse all-docutils all-pworker: all-%:
 	cd $(srcdir)/$* && \
 	sed -i 's/from setuptools import setup.*/from distutils.core import setup/' setup.py && \
 	python setup.py build
 
-dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker dev-requests: dev-%: all-%
+dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker: dev-%: all-%
 	cd $(srcdir)/$* && python setup.py install --prefix= --home=$(installdir)
 
-clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker clean-requests: clean-%:
+clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker: clean-%:
 	-cd $(srcdir)/$* && python setup.py clean
 
-distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker distclean-requests: distclean-%: clean-%
+distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker: distclean-%: clean-%
 
 clean:
 	-$(MAKE) -k $(addprefix clean-, $(SUBDIRS))
@@ -179,7 +178,6 @@ release:
 	$(MAKE) dev-argparse
 	$(MAKE) dev-docutils
 	$(MAKE) dev-pworker
-	$(MAKE) dev-requests
 	$(MAKE) installdir=$(distdir) dev-atos-utils
 	cp -a $(installdir)/lib/python $(distdir)/lib/atos
 	mkdir -p $(distdir)/lib/atos/i386/bin
