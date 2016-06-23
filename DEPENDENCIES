@@ -6,8 +6,8 @@ configurations:
 repositories:
   argparse: {alias: argparse, format: tar, repos: 'http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
-  atos-utils: {format: git, repos: 'https://github.com/knochelh/atos-utils.git',
-    revision: 445590dc0a2ebe6e04bdf10fd71e883e19cc42a1}
+  atos-utils: {format: git, repos: 'https://github.com/atos-tools/atos-utils.git',
+    revision: abb8d4f98605c75b1cd7df3b36c3e13c11b933ce}
   docutils: {alias: docutils, format: tar, repos: 'http://downloads.sourceforge.net/project/docutils/docutils/0.9.1/docutils-0.9.1.tar.gz',
     revision: c55d1ccabe2de82dd93d0f14884d07bbe10a3d40, skip_dirs: 1}
   jsonlib: {alias: jsonlib, format: tar, repos: 'https://github.com/guillon/python-jsonlib/archive/master.zip',
