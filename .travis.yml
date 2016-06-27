@@ -4,5 +4,6 @@ script:
   - . ./setenv.sh
   - ./dependencies -c release extract
   - make -j 4
-  - make -j 4 release
+  - cd atos-utils
+  - make -j4 check
 
