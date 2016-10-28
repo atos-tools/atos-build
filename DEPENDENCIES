@@ -4,7 +4,7 @@ configurations:
   release: [atos-utils, talloc, proot, zoostrap, qemu, jsonpath, jsonlib, argparse, docutils,
     uthash, libarchive]
 repositories:
-  argparse: {alias: argparse, format: tar, repos: 'http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz',
+  argparse: {alias: argparse, format: tar, repos: 'https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/argparse/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
   atos-utils: {format: git, repos: 'https://github.com/atos-tools/atos-utils.git',
     revision: 0c13e12641a8ffd08539a695ac1daf0a0aafc529}
