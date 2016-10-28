@@ -1,33 +1,28 @@
 configurations:
-  default: [atos-utils, talloc, proot, qemu, jsonpath, jsonlib, argparse, docutils,
-    pworker, uthash, libarchive]
-  release: [atos-utils, talloc, proot, qemu, jsonpath, jsonlib, argparse, docutils,
-    pworker, uthash, libarchive, rhlinux-i586-5el-rootfs, rhlinux-x86_64-5el-rootfs]
+  default: [atos-utils, talloc, proot, qemu, jsonpath, jsonlib, argparse, docutils, 
+    uthash, libarchive]
+  release: [atos-utils, talloc, proot, zoostrap, qemu, jsonpath, jsonlib, argparse, docutils,
+    uthash, libarchive]
 repositories:
-  argparse: {alias: argparse, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/argparse-1.2.1.tar.gz',
+  argparse: {alias: argparse, format: tar, repos: 'http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz',
     revision: caadac82aa2576d6b445058c1fcf6ef0b14dbaa1, skip_dirs: 1}
-  atos-utils: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/okla/atos-utils',
-    revision: 7c0f3ecc72ed2155a4349dfe5ecc1c906c8d1693}
-  docutils: {alias: docutils, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/docutils-0.9.1.tar.gz',
+  atos-utils: {format: git, repos: 'https://github.com/atos-tools/atos-utils.git',
+    revision: 0c13e12641a8ffd08539a695ac1daf0a0aafc529}
+  docutils: {alias: docutils, format: tar, repos: 'http://downloads.sourceforge.net/project/docutils/docutils/0.9.1/docutils-0.9.1.tar.gz',
     revision: c55d1ccabe2de82dd93d0f14884d07bbe10a3d40, skip_dirs: 1}
-  jsonlib: {alias: jsonlib, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonlib-0.1.tar.gz',
-    revision: 6f4eb75526859631009c2359d9b0da98ddef6b6d, skip_dirs: 1}
-  jsonpath: {alias: jsonpath, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/jsonpath-0.53.tar.gz',
+  jsonlib: {alias: jsonlib, format: tar, repos: 'https://github.com/guillon/python-jsonlib/archive/master.zip',
+    revision: b3e07d75e9269a6939dd2fadf0f07b229c932cb3, skip_dirs: 1}
+  jsonpath: {alias: jsonpath, format: tar, repos: 'http://www.ultimate.com/phil/python/download/jsonpath-0.53.tar.gz',
     revision: 5c403247d9638ae6690e122be410a506eb1de810, skip_dirs: 1}
-  libarchive: {alias: libarchive, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/libarchive-3.1.2.tar.gz',
+  libarchive: {alias: libarchive, format: tar, repos: 'http://www.libarchive.org/downloads/libarchive-3.1.2.tar.gz',
     revision: 6a991777ecb0f890be931cec4aec856d1a195489, skip_dirs: 1}
-  proot: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/proot/u/christophe_guillon/proot',
+  proot: {alias: proot, format: git, repos: 'https://github.com/knochelh/PRoot.git',
     revision: 208fe0b022b9f256540aa4011e042d5413048bf2}
-  pworker: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/atos/pworker', revision: fde5dc70cadb66167ecc17c4ba4457e9f88bd619}
-  qemu: {format: git, repos: 'ssh://gitolite@codex.cro.st.com/qemu/qemu.git', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
-  rhlinux-i586-5el-rootfs: {alias: distros/rhlinux-i586-5el-rootfs, format: tar, ignore_status: true,
-    repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.i586.tgz',
-    revision: bf9c81d647fb05a0d3eca7055e5e2be565ffd2ba}
-  rhlinux-x86_64-5el-rootfs: {alias: distros/rhlinux-x86_64-5el-rootfs, format: tar,
-    ignore_status: true, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/opensuse.org.repo.RHEL_5.x86_64.tgz',
-    revision: d571872d60c59eeedca900b5d0e59bf16a378571}
-  talloc: {alias: talloc, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/talloc-2.0.8.tar.gz',
+  zoostrap: {format: git, repos: 'https://github.com/guillon/zoostrap.git',
+    revision: 6f2e121bde979bef0afb85afc7d88e7e49779e1f}
+  qemu: {format: git, repos: 'https://github.com/cedric-vincent/qemu.git', revision: b8103c1294aeee0a25c65d8012fea87b0f826451}
+  talloc: {alias: talloc, format: tar, repos: 'https://download.samba.org/pub/talloc/talloc-2.0.8.tar.gz',
     revision: 5ca7710a3f95a1db873c97fcf83f92dddfd57907, skip_dirs: 1}
-  uthash: {alias: uthash, format: tar, repos: 'ssh://gnx5855.gnb.st.com/home/compwork/projects/atos/uthash-master.zip',
-    revision: 91eee9b5d7835431fdc4a5d6c9711c8c1a734c41, skip_dirs: 1}
+  uthash: {alias: uthash, format: tar, repos: 'https://github.com/troydhanson/uthash/archive/v1.9.8.tar.gz',
+    revision: 4f231c527da9495a8c7ccd12e8b1686531cdf34a, skip_dirs: 1}
 

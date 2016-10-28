@@ -43,7 +43,7 @@ installdir=$(currentdir)/devimage
 builddir=$(currentdir)/build
 distdir=$(currentdir)/distimage
 
-SUBDIRS=talloc proot qemu jsonpath jsonlib argparse docutils pworker atos-utils
+SUBDIRS=talloc proot zoostrap qemu jsonpath jsonlib argparse docutils atos-utils
 
 .PHONY: all default release $(addprefix configure-, $(SUBDIRS)) $(addprefix all-, $(SUBDIRS)) dev $(addprefix dev-, $(SUBDIRS)) clean $(addprefix clean-, $(SUBDIRS)) distclean $(addprefix distclean-, $(SUBDIRS)) $(addprefix all-static-, $(SUBDIRS)) $(addprefix static-, $(SUBDIRS))
 
@@ -58,7 +58,6 @@ default:
 	$(MAKE) dev-jsonlib
 	$(MAKE) dev-argparse
 	$(MAKE) dev-docutils
-	$(MAKE) dev-pworker
 	$(MAKE) dev-atos-utils
 
 all-atos-utils:
@@ -77,6 +76,15 @@ all-proot:
 dev-proot: all-proot
 	$(MAKE) -C $(builddir)/proot -f $(srcdir)/proot/src/GNUmakefile install-care GIT=false CARE_BUILD_ENV=ok ENABLE_ADDONS="cc_opts reloc_exec" CFLAGS="-Wall -O2 -I$(installdir)/include -I$(srcdir)/uthash/src" LDFLAGS="-L$(installdir)/lib -ltalloc -larchive -lz" PREFIX=$(installdir)
 	cp -a $(installdir)/bin/care $(installdir)/bin/proot
+
+all-zoostrap:
+	$(MAKE) -C $(srcdir)/zoostrap -f $(srcdir)/zoostrap/GNUmakefile all
+
+dev-zoostrap: all-zoostrap
+	$(MAKE) -C $(srcdir)/zoostrap -f $(srcdir)/zoostrap/GNUmakefile install PREFIX=$(installdir)
+
+zoostrap-rootfs: dev-zoostrap
+	env ZS_DISTRIB_ID=ubuntu ZS_DISTRIB_RELEASE=12.04 ZS_DISTRIB_ARCH=x86_64 ZS_DISTRIB_PACKAGES="wget gcc python git make zlib1g-dev" $(installdir)/bin/zoostrap $(builddir)/rootfs
 
 all-static-proot:
 	mkdir -p $(builddir)/proot
@@ -137,18 +145,18 @@ dev-qemu: all-qemu
 clean-qemu distclean-qemu: %-qemu:
 	-$(MAKE) -C $(srcdir)/qemu $*
 
-all-jsonpath all-jsonlib all-argparse all-docutils all-pworker: all-%:
+all-jsonpath all-jsonlib all-argparse all-docutils: all-%:
 	cd $(srcdir)/$* && \
 	sed -i 's/from setuptools import setup.*/from distutils.core import setup/' setup.py && \
 	python setup.py build
 
-dev-jsonpath dev-jsonlib dev-argparse dev-docutils dev-pworker: dev-%: all-%
+dev-jsonpath dev-jsonlib dev-argparse dev-docutils: dev-%: all-%
 	cd $(srcdir)/$* && python setup.py install --prefix= --home=$(installdir)
 
-clean-jsonpath clean-jsonlib clean-argparse clean-docutils clean-pworker: clean-%:
+clean-jsonpath clean-jsonlib clean-argparse clean-docutils: clean-%:
 	-cd $(srcdir)/$* && python setup.py clean
 
-distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils distclean-pworker: distclean-%: clean-%
+distclean-jsonpath distclean-jsonlib distclean-argparse distclean-docutils: distclean-%: clean-%
 
 clean:
 	-$(MAKE) -k $(addprefix clean-, $(SUBDIRS))
@@ -158,31 +166,24 @@ distclean:
 	rm -rf $(builddir) $(installdir) $(distdir) atos-$(atos_version)
 
 CLEAN_ENV=env PATH=/usr/bin:/bin LD_LIBRARY_PATH=$(installdir)/lib PYTHONPATH= PYTHONSTARTUP=
-PROOT_i386=$(installdir)/bin/proot -B -r $(srcdir)/distros/rhlinux-i586-5el-rootfs
-PROOT_x86_64=$(installdir)/bin/proot -B -r $(srcdir)/distros/rhlinux-x86_64-5el-rootfs
+ZOOSTRAP_RUN=$(builddir)/rootfs/.zoostrap/run
 
 release:
 	$(MAKE) distclean
 	$(MAKE) dev-talloc
 	$(MAKE) dev-libarchive
 	$(MAKE) dev-proot
+	$(MAKE) zoostrap-rootfs
 	# There may be issues in parallel make when running make across platforms, disable with -j1 on guest side
-	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 static-talloc
-	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 static-libarchive
-	$(CLEAN_ENV) $(PROOT_i386) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/i386 installdir=$(installdir)/i386 static-proot
-	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-talloc
-	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-libarchive
-	$(CLEAN_ENV) $(PROOT_x86_64) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-proot
+	$(ZOOSTRAP_RUN) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-talloc
+	$(ZOOSTRAP_RUN) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-libarchive
+	$(ZOOSTRAP_RUN) -w $(currentdir) -b $(srcdir) -b $(builddir) -b $(installdir) $(MAKE) -j1 builddir=$(builddir)/x86_64 installdir=$(installdir)/x86_64 static-proot
 	$(MAKE) dev-jsonpath
 	$(MAKE) dev-jsonlib
 	$(MAKE) dev-argparse
 	$(MAKE) dev-docutils
-	$(MAKE) dev-pworker
 	$(MAKE) installdir=$(distdir) dev-atos-utils
 	cp -a $(installdir)/lib/python $(distdir)/lib/atos
-	mkdir -p $(distdir)/lib/atos/i386/bin
-	cp -a $(installdir)/i386/bin/proot $(distdir)/lib/atos/i386/bin
-	cp -a $(installdir)/i386/bin/care $(distdir)/lib/atos/i386/bin
 	mkdir -p $(distdir)/lib/atos/x86_64/bin
 	cp -a $(installdir)/x86_64/bin/proot $(distdir)/lib/atos/x86_64/bin
 	cp -a $(installdir)/x86_64/bin/care $(distdir)/lib/atos/x86_64/bin

@@ -1,0 +1,9 @@
+sudo: required
+language: bash
+script:
+  - . ./setenv.sh
+  - ./dependencies -c release extract
+  - make -j 4
+  - cd atos-utils
+  - make -j4 check
+
